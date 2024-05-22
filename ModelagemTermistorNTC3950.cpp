@@ -40,3 +40,29 @@ double temperatura (int TensaoNominal, int PinoTermistor, int ResistenciaFixa, i
   
   return tempertura;
 }
+
+// Função para calcular a temperatura com base em um termistor NTC
+// Parâmetros:
+// - TensaoNominal: Tensão nominal do termistor (em volts)
+// - PinoTermistor: Pino analógico conectado ao termistor
+// - ResistenciaFixa: Valor da resistência fixa (em ohms)
+// - TemperaturaNominal: Temperatura nominal do termistor (em graus Celsius)
+// - ResistenciaNominal: Valor da resistência nominal do termistor (em ohms)
+// - FatorBeta: Coeficiente Beta do termistor
+// Retorna a temperatura calculada em graus Celsius
+double calcularTemperatura(int TensaoNominal, int PinoTermistor, int ResistenciaFixa, int TemperaturaNominal, int ResistenciaNominal, int FatorBeta) {
+    // Lê a tensão no pino do termistor
+    int TensaoLida = analogRead(PinoTermistor);
+    
+    // Calcula a resistência do termistor usando a fórmula RX = R0 * exp(-ß / T0)
+    double ResistenciaTermistor = ResistenciaNominal * exp(-FatorBeta / TemperaturaNominal);
+    
+    // Calcula a temperatura usando a fórmula T = ß * ln(R / RX)
+    double temperatura = FatorBeta * log(ResistenciaFixa / ResistenciaTermistor);
+    
+    // Converte a temperatura de Kelvin para Graus Celsius
+    temperatura -= 273.15;
+    
+    return temperatura;
+}
+
